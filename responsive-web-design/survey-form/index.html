@@ -1,0 +1,85 @@
+    <!DOCTYPE HTML>
+    <html lang="en">
+
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <header>
+            <h1 id="title">Pizza Order Form</h1>
+        </header>
+    </head>
+
+    <body>
+        <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+        <p id="description">Fill-up the form to complete your order</p>
+
+        <form id="survey-form">
+            <div class="input-heading">
+                <label for="name" id="name-label">Name</label>
+                <input id="name" type="text" name="name" placeholder="Your Name" class="form-inputs" required></input>
+                <br>
+
+                <label for="email" id="email-label">Email</label>
+                <input id="email" type="email" name="email" placeholder="yourname@domain.com" class="form-inputs"
+                    required></input>
+                <br>
+
+                <label for="number" id="number-label">Number of persones</label>
+                <input id="number" type="number" name="number" placeholder="1" min="1" max="99" class="form-inputs"
+                    required></input>
+                <br>
+
+                <label for="dropdown" id="type">Pizza type</label>
+                <select id="dropdown" class="form-inputs">
+                    <option value="neapolitan-Pizza">Neapolitan Pizza</option>
+                    <option value="chicago-Pizza">Chicago Pizza</option>
+                    <option value="new-york-style-pizza">New York-Style Pizza</option>
+                    <option value="sicilian-pizza">Sicilian Pizza</option>
+                    <option value="greek-pizza">Greek Pizza</option>
+                    <option value="california-pizza">California Pizza</option>
+                </select>
+                <br>
+                <br>
+
+                <label for="pizza_base" id="pizza_base"><b>Pizza base</b></label>
+                <br>
+                <input id="pizza_base" type="radio" name="base" value="thin">
+                <label for="pizza_base">Thin</label>
+                <br>
+                <input id="pizza_base" type="radio" name="base" value="classic">
+                <label for="pizza_base">Classic</label>
+                <br>
+                <input id="pizza_base" type="radio" name="base" value="cheese">
+                <label for="pizza_base">Cheese</label>
+                <br>
+                <br>
+
+                <label for="extras"><b>Extras</b></label>
+                <br>
+                <input id="checkbox" type="checkbox" name="extras" value="marinara">
+                <label for="checkbox">Add Marinara Sauce +$0.75</label>
+                <br>
+                <input id="checkbox" type="checkbox" name="extras" value="ranch">
+                <label for="checkbox">Add Ranch Dressing +0.75$</label>
+                <br>
+                <input id="checkbox" type="checkbox" name="extras" value="cheese">
+                <label for="checkbox">Add Blue Cheese Dressing +0.75$</label>
+                <br>
+                <input id="checkbox" type="checkbox" name="extras" value="ketchup">
+                <label for="checkbox">Add Ketchup +0.75$</label>
+                <br>
+                <br>
+
+                <label id="textarea">Add Special Instructions</label>
+                <br>
+                <textarea id="textarea" name"instructions" rows="5" cols="60"
+                    placeholder="e.g. allergies, extra spicy, etc">
+      </textarea>
+                <br>
+
+                <input id="submit" type="submit" value="Add To Order" class="submit-button">
+            </div>
+        </form>
+
+        <body>
+
+    </html>
