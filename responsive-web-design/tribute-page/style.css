@@ -1,0 +1,16 @@
+body {
+    background-color: gray;
+    color: black;
+    font-family: calibry;
+}
+
+#img-caption {
+    width: 400px;
+}
+
+#image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: auto;
+}
