@@ -1,0 +1,19 @@
+header {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 53px;
+    padding: 10px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: gray;
+    opacity: 0.5
+  }
+  
+  @media only screen and (max-width: 400px) {
+    body {
+      flex-wrap: wrap;
+    }
+  }
+  
