@@ -4,8 +4,12 @@ body {
     font-family: calibry;
 }
 
+h1 {
+    text-align: center;
+}
+
 #img-caption {
-    width: 400px;
+    text-align: justify;
 }
 
 #image {
@@ -13,4 +17,8 @@ body {
     height: auto;
     display: block;
     margin: auto;
+}
+
+p {
+    text-align: justify;
 }

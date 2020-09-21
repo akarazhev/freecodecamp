@@ -1,0 +1,209 @@
+    <!DOCTYPE HTML>
+    <html lang="en">
+
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+<div class='main-body'>
+
+  <nav id="navbar">
+    <header>
+      Metacfg4j Documentation
+    </header>
+    <a href="#Introduction" class="nav-link">Introduction</a>
+    <a href="#Architecture" class="nav-link">Architecture</a>
+    <a href="#Configuration_And_Usage" class="nav-link">Configuration And Usage</a>
+    <a href="#Build_Requirements" class="nav-link">Build Requirements</a>
+    <a href="#Contribution" class="nav-link">Contribution</a>
+  </nav>
+
+  <main id="main-doc">
+    <section class="main-section" id="Introduction">
+      <header>Introduction</header>
+      <p>The <i>metacfg4j</i> project (that stands for the <i>meta configuration for java</i>) is a library that can be used as the solution by creating a business abstraction or may extend an existed implementation to provide such software solutions as: various configuration (application, user's and etc.), CRUD services, DSL, MVP.</p>
+    </section>
+    <section class="main-section" id="Architecture">
+      <header>Architecture</header>
+      <p>This is a high-level abstraction based on the low-level API. It has been written without frameworks and delivered with a fork of the Java Toolkit (JSON.simple)</p>
+      <p>This library has the implementation of a simple web-client/server, repositories, services, controllers. The web-server provides implementation of REST methods. Data is persisted into a DB, by using any configured datasource.</p>
+      <p>The size of the library is ~120 Kb.</p>
+    </section>
+    <section class="main-section" id="Configuration_And_Usage">
+      <header>Configuration And Usage</header>
+      <h3>Basic Configuration</h3>
+      <p>Add a maven dependency into your project:</p>
+      <code>com.github.akarazhev::metacfg4j::2.0</code>
+      <p>Note: This version is adopted for Java 14+, use please a 1.x version for Java 8.</p>
+      <p>Instantiate the meta configuration class in your project with the default configuration:</p>
+      <code>public MetaConfig metaConfig() { return new MetaConfig.Builder().defaultConfig().build(); }</code>
+      <p>If you have the configured data source, you can use it:</p>
+      <code>public MetaConfig metaConfig() { return new MetaConfig.Builder().dataSource(getDataSource()).build(); }</code>
+      <p>NOTE: The web-server will not be started, since it requires the related configuration.</p>
+      <h3>Advanced Configuration</h3>
+      <p>You can instantiate the meta configuration with the custom configuration:</p>
+      <code><pre>public MetaConfig metaConfig() {
+      // Create the custom data mapping
+      final Map<String, String> dataMapping = new HashMap<>();
+      dataMapping.put(Constants.Mapping.CONFIGS_TABLE, "CONFIGS");
+      dataMapping.put(Constants.Mapping.CONFIG_ATTRIBUTES_TABLE, "CONFIG_ATTRIBUTES");
+      dataMapping.put(Constants.Mapping.PROPERTIES_TABLE, "PROPERTIES");
+      dataMapping.put(Constants.Mapping.PROPERTY_ATTRIBUTES_TABLE, "PROPERTY_ATTRIBUTES");
+      // Create the web server config
+      final Config webServer = new Config.Builder(Server.Settings.CONFIG_NAME,
+      Arrays.asList(
+            new Property.Builder(Server.Settings.HOSTNAME, "localhost").build(),
+            new Property.Builder(Server.Settings.API_PATH, "/api/metacfg/").build(),
+            new Property.Builder(Constants.Endpoints.ACCEPT_CONFIG, "accept_config").build(),
+            new Property.Builder(Constants.Endpoints.CONFIG_NAMES, "config_names").build(),
+            new Property.Builder(Constants.Endpoints.CONFIG, "config").build(),
+            new Property.Builder(Server.Settings.PORT, 8000).build(),
+            new Property.Builder(Server.Settings.BACKLOG, 0).build(),
+            new Property.Builder(Server.Settings.KEY_STORE_FILE, "./data/metacfg4j.keystore").build(),
+            new Property.Builder(Server.Settings.ALIAS, "alias").build(),
+            new Property.Builder(Server.Settings.STORE_PASSWORD, "password").build(),
+            new Property.Builder(Server.Settings.KEY_PASSWORD, "password").build()))
+      .build();
+      // Create the meta configuration
+      return new MetaConfig.Builder().
+            webServer(webServer).
+            dataSource(getDataSource()).
+            dataMapping(dataMapping).
+            build();
+}</pre></code>
+      <p>It's possible to configure the meta configuration as a client:</p>
+      <code><pre>public MetaConfig metaConfig() {
+      // Create the web client config
+      final Config webClient = new Config.Builder(WebClient.Settings.CONFIG_NAME,
+      Arrays.asList(
+        new Property.Builder(WebClient.Settings.URL, "https://localhost:8000/api/metacfg").build(),
+        new Property.Builder(Constants.Endpoints.ACCEPT_CONFIG_ENDPOINT, "accept_config").build(),
+        new Property.Builder(Constants.Endpoints.CONFIG_NAMES_ENDPOINT, "config_names").build(),
+        new Property.Builder(Constants.Endpoints.CONFIG_ENDPOINT, "config").build(),
+        new Property.Builder(WebClient.Settings.ACCEPT_ALL_HOSTS, true).build()))
+      .build();
+      // Create the meta configuration
+      return new MetaConfig.Builder().webClient(webClient).build();
+}</pre></code>
+      <p>NOTE: you need to call the close method at the end of processing.</p>
+      <h3>Certificate generation</h3>
+      <p>To generate a certificate, you need open a command line and and enter:</p>
+      <code>keytool -genkeypair -keyalg RSA -alias alias -keypass password -keystore metacfg4j.keystore -storepass password</code>
+      <p>If you have certificate that's signed by CA (Certificate Authority), please use it.</p>
+      <h3>Settings</h3>
+      <h4>Web Server settings</h4>
+      <p>The following settings are available:</p>
+      <ul>
+        <li><i>config-server</i> - the name of the configuration.</li>
+        <li><i>hostname</i> - the server hostname.</li>
+        <li><i>port</i> - the server port.</li>
+        <li><i>backlog</i> - the server backlog.</li>
+        <li><i>key-store-file</i> - the path to a certificate.</li>
+        <li><i>alias</i> - the alias of a certificate.</li>
+        <li><i>store-password</i> - the store password of a certificate.</li>
+        <li><i>key-password</i> - the key password of a certificate.</li>
+      </ul>
+      <h3>Java Usage</h3>
+      <p>The Java API is available:</p>
+      <code><pre>/**
+ * Provides service methods to create, read, update and delete operations.
+ */
+public interface ConfigService {
+ 
+/**
+ * Updates configuration models.
+ *
+ * @param stream a stream of configuration models.
+ * @return a stream of updated configuration models.
+ */
+ Stream<Config> update(final Stream<Config> stream);
+ 
+/**
+ * Returns all configuration names.
+ *
+ * @return a stream of configuration names.
+ */
+ Stream<String> getNames();
+ 
+/**
+ * Returns selected configuration names by a config page request.
+ *
+ * @param request a configuration page request that has parameters: page, size, ascending.
+ * @return a page with configuration names.
+ */
+ PageResponse getNames(final PageRequest request);
+  
+/**
+ * Returns all configuration models.
+ *
+ * @return a stream of configurations models.
+ */
+ Stream<Config> get();
+  
+/**
+ * Returns configuration models by names.
+ *
+ * @param stream a stream of names.
+ * @return a stream of configurations models.
+ */
+ Stream<Config> get(final Stream<String> stream);
+
+/**
+ * Removes configuration models by names.
+ *
+ * @param stream a stream of names.
+ * @return a number of deleted models.
+ */
+ int remove(final Stream<String> stream);
+
+/**
+ * Accepts a configuration model by names.
+ *
+ * @param stream a stream of names.
+ */
+ void accept(final Stream<String> stream);
+
+/**
+ * Adds a consumer to provide an action.
+ *
+ * @param consumer an implementation of the consumer.
+ */
+ void addConsumer(final Consumer<Config> consumer);
+}</pre></code>
+      <h3>REST Usage</h3>
+      <p>
+        The REST API is available by the https protocol:
+      </p>
+      <p>Calls the logic for configs:
+        <p />
+        <code>POST api/metacfg/accept_config/CONFIG_NAMES_IN_BASE64</code>
+        <p>Returns a list of config names:</p>
+        <code>GET api/metacfg/config_names</code>
+        <p>Returns a page response based on a page request that has a list of config names and pagination settings:</p>
+        <code>GET api/metacfg/config_names?page_request=CONFIG_NAMES_IN_BASE64</code>
+        <p>Returns a list of configs:</p>
+        <code>GET api/metacfg/config?names=CONFIG_NAMES_IN_BASE64</code>
+        <p>Creates or updates a config:</p>
+        <code>PUT api/metacfg/config</code>
+        <p>Removes a list of configs:</p>
+        <code>DELETE api/metacfg/config?names=CONFIG_NAMES_IN_BASE64</code>
+    </section>
+    <section class="main-section" id="Build_Requirements">
+      <header>Build Requirements</header>
+      <ul>
+        <li>Java 14+</li>
+        <li>Maven 3.6+</li>
+      </ul>
+    </section>
+    <section class="main-section" id="Contribution">
+      <header>Contribution</header <p>Contribution is always welcome. Please perform changes and submit pull requests into this branch.
+      Please set your editor to use spaces instead of tabs, and adhere to the apparent style of the code you are editing.</p>
+    </section>
+  </main>
+</div>
+        
+    </body>
+
+    </html>
