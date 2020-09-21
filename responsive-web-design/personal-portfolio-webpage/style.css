@@ -1,0 +1,29 @@
+@media screen(width:200) {
+    body {
+        font-size: 10px;
+    }
+}
+
+#welcome-section {
+    height: 100vh;
+}
+
+header {
+    top: 0;
+    height: 100p;
+    color: green;
+    display: fixed;
+}
+
+nav {
+    position: fixed;
+}
+
+ol {
+    position: fixed;
+    list-style: none;
+    max-width: 100%;
+    display: flex;
+    width: 700px;
+    justify-content: space-around;
+}
