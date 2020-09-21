@@ -1,8 +1,8 @@
-@media screen(width:200) {
+@media only screen and (max-width: 200px) {
     body {
         font-size: 10px;
     }
-}
+  }
 
 #welcome-section {
     height: 100vh;
