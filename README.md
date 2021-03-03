@@ -1,3 +1,3 @@
-# FreeCodeCamp: Certifications 
+# FreeCodeCamp: Exersises and Projects
 
-Responsive Web Design Projects: Tribute Page, Survey Form, Product Landing Page, Technical Documntation Page, Personal Portfolio Webpage.
+- Responsive Web Design: Basic HTML and HTML5, Basic CSS, Applied Visual Design, Applied Accessibility, Responsive Web Design Principles, CSS Flexbox, CSS Grid, Responsive Web Design Projects.
